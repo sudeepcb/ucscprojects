@@ -1,0 +1,29 @@
+#------------------------------------------------------------------------ 
+# Sudeep Baniya
+# CMPS 101
+# sucbaniy
+# PA4 
+# README
+# Contents of pa4 assignment and remarks
+#------------------------------------------------------------------------
+
+1. List.c
+
+2. List.h
+
+3. Graph.c
+
+4. Graph.h
+
+5. GraphTest.c
+
+6. FindPath.c
+
+7. Makefile
+
+8. README
+
+
+#------------------------remarks to grader------------------------  
+
+1. For the function getSize() in Graph.c you can notice that I had added abs() function, this is because my size value outputs were all in range of negative integers. They still give the correct abs() value. If it do not matter the negative value then the line above the return (s); can be commented out

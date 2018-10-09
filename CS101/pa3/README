@@ -1,0 +1,18 @@
+Sudeep Baniya
+CMPS 101
+2-13-2017
+sucbaniy
+README
+List the contents of the pa3 assignment
+
+1. Sparse.java
+2. List.java
+3. Matrix.java
+4. ListTest.java
+5. MatrixTest.java
+6. MatrixClient.java
+7. Makefile
+8. README
+
+// Comments
+My program for Matrix uses helper function addsub() for add() and sub() and dot() for mult().

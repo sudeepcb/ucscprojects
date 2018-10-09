@@ -1,0 +1,15 @@
+Sudeep Baniya
+CMPS 12B
+4-28-2016
+sucbaniy
+README
+List the contents of the pa3 assignment
+
+1. Dictionary.java
+2. DictionaryTest.java
+3. DictionaryClient.java
+4. DictionaryInterface.java
+5. DuplicateKeyException.java
+6. KeyNotFoundException.java
+7. Makefile
+8. README

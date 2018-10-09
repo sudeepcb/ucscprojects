@@ -1,0 +1,21 @@
+/------------------------------------------------------------------------------
+// Sudeep Baniya
+// CMPS 12B
+// sucbaniy
+// 5-15-2016
+// List the contents of the pa4 assignment
+// README 
+//------------------------------------------------------------------------------
+
+1. Simulation.java
+2. QueueInterface.java
+3. QueueEmptyException.java
+4. Queue.java
+5. QueueTest.java
+6. Job.java
+7. Makefile
+8. README
+
+// Not sure if I have to mention this but my program takes scanner of one in files and two out files with same name 
+// Ex: Simulation ex1 <- in ex1<-out ex1<-out
+// With the two out ex1 turns into ex1.trc ex1.rpt

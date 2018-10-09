@@ -1,0 +1,16 @@
+#------------------------------------------------------------------------------
+# Sudeep Baniya 
+# CMPS 12M
+# sucbaniy
+# 6/3/2016
+# List the contents of lab 7 
+# README
+#--------------------------------------------------------------------------
+
+1. Dictionary.java
+2. DictionaryInterface.java
+3. DictionaryClient.java
+4. KeyNotFoundException.java
+5. DuplicateKeyException.java
+6. Makefile
+7. README

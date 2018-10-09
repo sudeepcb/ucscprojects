@@ -1,0 +1,5 @@
+1. There is no period when the input is 2 for question 5.
+
+2. The sentence is wrong when the input is 3 for questions 3. It states last weekend when it should be next weekend
+
+3. The expected output has book but in this LetterHome.class the output is books.

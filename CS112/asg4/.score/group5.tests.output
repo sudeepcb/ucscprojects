@@ -1,0 +1,157 @@
+/* Prolog Not */
+not( X ) :- X, !, fail.
+not( _ ).
+
+/* Converts DMS to Radians */
+dms_radian( degmin( Degrees, Minutes ), Total ) :-
+    Total is (Degrees + Minutes / 60) * pi / 180.
+
+/* Calculates great circle distance */
+haversine_radians( Latitude1, Longitude1, Latitude2, Longitude2, Distancetotal, FlightTime ) :-
+    DLatitude is Latitude2 - Latitude1,
+    DLongitude is Longitude2 - Longitude1,
+    A is sin( DLatitude / 2 ) ** 2 + cos( Latitude1 ) * cos( Latitude2 ) * sin( DLongitude / 2 ) ** 2,
+    Distance is 2 * atan2( sqrt( A ), sqrt( 1 - A )),
+    Distancetotal is (3961 * Distance ),
+    FlightTime is (Distancetotal / 500).
+
+ 
+
+/* Calculate FlightTime in Hours */
+flight_totaldistance( A1, A2, FlightTime ) :-
+    airport( A1, _, X1, Y1 ),
+    airport( A2, _, X2, Y2 ),
+        dms_radian( X1, Latitude1 ),
+        dms_radian( Y1, Longitude1 ),
+        dms_radian( X2, Latitude2 ),
+        dms_radian( Y2, Longitude2 ),
+    haversine_radians( Latitude1, Longitude1, Latitude2, Longitude2, _, FlightTime).
+    
+
+flight_totaltime(A1, A2, Hour, Min) :-
+    flight_totaldistance( A1, A2, FlightTime ),
+    Final = FlightTime * 60,
+    FinalMin is round(Final),
+    Min is mod(FinalMin, 60),
+    Hour is div(FinalMin, 60).
+
+
+time_format(Min) :-
+    Min < 10,
+    write(0),
+    write(Min).
+
+time_format(Min) :-
+    Min > 10,
+    write(Min).
+    
+
+/* Self Explanatory 
+convert_hours( Hours, Minutes, HourAMin ) :-
+    HourAMin is Hours + Minutes / 60.
+
+convert_minutes( Hours, Minutes ) :-
+    Minutes is Hours * 60.
+*/
+
+
+
+/* to_upper (AP, Name) :-
+    atom_chars( AP, APlist),
+    maplist(ap_name, APlist, Namelist),
+    atom_chars( Name, Namelist).
+*\
+
+check_direct(Home, Destination) :-
+    flight(Home, Destination, _),
+    !.
+
+airport_getname(AP, Name) :-
+    airport(AP, Name, _, _),
+    /* to_upper(AP, Name),*\
+    write(Name).
+
+check_flighttime(time(H, Minute1), time(H, Minute2)) :-
+    !, 
+    Minute2 > Minute1.
+check_flighttime(time(Hour1, _), time(Hour2, _)) :-
+    Hour2 > Hour1.
+
+calculate_arrivaltime( A1, A2, time(DepartHour, DepartMinute), time(ArriveHour, ArriveMinute)) :-
+    flight_totaltime( A1, A2, Hour, Min),
+    ArriveMinute is mod(DepartMinute + Min, 60)
+    ArriveHour is (DepartHour + Hour + div(Min, + DepartMinute, 60)).
+
+calculate_departuretime(time(ArriveHour,ArriveMinute), time(NextDepartHour,NextDepartMinute)):-
+     NextDepartHour is ArriveHour + div(ArriveMinute + 30, 60), 
+     NextDepartMinute is mod(ArriveMinute + 30, 60).
+
+ /* Write the first path available */
+list_path( Head, Tail, List, Times ) :-
+    flight( Head, _, Departure),
+    list_path( Head, Tail, Departure, [Head], List, Times ).
+
+list_path( Head, Head, _, [Head], []).
+
+list_path( Head, Tail, Departure, _, [Head|List], [Departure|Times] ) :-
+    flight( Head, Tail, Departure ),
+    list_path(Tail, Tail, _, List, Times).
+
+list_path( Head, Tail, Departure, Approach, [Head|List], [Departure|Times]) :-
+    (check_direct(Head, Tail) -> flight(Head, Tail, Departure),
+    list_path(Head, Tail, Departure, _, List, Times) ;
+    flight( Head, Next1, Departure),
+    flight( Next1, Next2, Next_Departure),
+    not( member( Next1, Approach)),
+    not( member( Next2, Approach)),
+    calculate_arrivaltime(Head, Next1, Departure, Arrival),
+    calculate_departuretime( Arrival, Arr_Departure ),
+    (check_flighttime(Arr_Departure, Next_Departure) -> list_path(Next1, Tail, Next_Departure, [Next1|Approach], List, Times); fail)
+    ).
+
+write_path( [_], [] ) :-
+    n1.
+
+write_path( [Leave|[Hub|List]], [time(Hour1, Minute1)|Times] ) :-
+    flight(Leave, Hub, time(Hour1, Minute1)),
+    calculate_arrivaltime(Leave, Hub, time(Hour1, Minute1), time(ArriveHour, ArriveMinute) ),
+    write('Depart: '), write(Leave), write('    '), airport_getname(Leave, _), write('   '), write(Hour1), write(':'),
+    time_format(Minute1),
+    nl,
+
+    write('Arrive: '), write(Hub), write('    '), airport_getname(Hub, _), write('   '), write(ArriveHour), write(':'),
+    time_format(ArriveMinute),
+    nl,
+    write_path( [Hub|List], Times).
+
+
+
+fly(Head, Tail) :-
+    list_path(Head, Tail, List, Times),
+        !,
+        nl,
+        write_path(List, Times),
+    true.
+
+fly( Depart, Depart ) :-
+    write( 'Departure and Arrival airports are the same' ),
+    nl,
+    !, 
+    fail.
+
+
+fly( _, _ ) :-
+    write( 'Error: Airports -> DNE' ), 
+    nl,
+    !, 
+    fail.
+
+
+
+fly( Depart, Arrive) :-
+    write( ' Error: There is no possible path from : ' ),
+    write(Depart), write( ' to '),
+    write(Arrive), write( '!'),
+    nl,
+    !,
+    fail.
